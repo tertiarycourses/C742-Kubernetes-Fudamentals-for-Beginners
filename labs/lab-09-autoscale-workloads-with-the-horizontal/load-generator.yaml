@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: load-generator
+  namespace: kcna-lab
+spec:
+  containers:
+  - name: load
+    image: busybox:1.36
+    command: ["sh", "-c"]
+    args:
+    - "while true; do wget -q -O- http://cpu-load.kcna-lab.svc.cluster.local; done"
+    resources:
+      requests:
+        cpu: 50m
+        memory: 32Mi

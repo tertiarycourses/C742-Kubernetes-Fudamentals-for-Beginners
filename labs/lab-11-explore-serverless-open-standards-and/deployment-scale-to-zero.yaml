@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scale-to-zero
+  namespace: kcna-lab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: scale-to-zero
+  template:
+    metadata:
+      labels:
+        app: scale-to-zero
+    spec:
+      containers:
+      - name: worker
+        image: busybox:1.36
+        command: ["sh","-c","echo worker up; sleep 3600"]
+        resources:
+          requests: { cpu: 25m, memory: 32Mi }
+          limits:   { cpu: 100m, memory: 64Mi }

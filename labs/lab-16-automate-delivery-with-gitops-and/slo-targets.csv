@@ -1,0 +1,9 @@
+service,slo_metric,target,actual_30d,error_budget_pct,budget_consumed_pct,status,incidents
+checkout-api,availability,99.90,99.94,0.10,58,met,1
+checkout-api,latency_p95_ms,300,412,0.10,100,breached,3
+inventory-api,availability,99.50,99.71,0.50,41,met,0
+inventory-api,latency_p95_ms,500,388,0.50,22,met,0
+search-api,availability,99.50,98.82,0.50,100,breached,4
+search-api,latency_p95_ms,800,743,0.50,67,met,1
+payments-api,availability,99.95,99.96,0.05,72,met,1
+notification-worker,queue_lag_seconds,60,187,0.50,100,breached,2

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orders-seed
+  namespace: kcna-lab
+data:
+  orders.csv: |
+    order_id,order_date,customer,sku,quantity,unit_price,status
+    ORD-20260101,2026-01-02,Acme Pte Ltd,SKU-1001,4,129.00,shipped
+    ORD-20260102,2026-01-02,Bright Labs,SKU-1004,2,249.00,shipped
+    ORD-20260103,2026-01-03,Corex Systems,SKU-1002,1,389.00,pending
+    ORD-20260104,2026-01-04,Delta Retail,SKU-1010,25,19.00,shipped
+    ORD-20260105,2026-01-05,Acme Pte Ltd,SKU-1009,3,169.00,pending
+    ORD-20260106,2026-01-06,Evergreen Co,SKU-1005,10,79.00,shipped
+    ORD-20260107,2026-01-07,Bright Labs,SKU-1003,5,199.00,cancelled
+    ORD-20260108,2026-01-08,Fusion Media,SKU-1007,2,149.00,shipped
+    ORD-20260109,2026-01-09,Corex Systems,SKU-1011,1,899.00,pending
+    ORD-20260110,2026-01-10,Delta Retail,SKU-1006,8,59.00,shipped
+    ORD-20260111,2026-01-11,Helios Group,SKU-1012,15,45.00,shipped
+    ORD-20260112,2026-01-12,Acme Pte Ltd,SKU-1008,6,45.00,pending

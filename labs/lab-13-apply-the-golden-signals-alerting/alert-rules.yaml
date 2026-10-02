@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: kcna-lab
+data:
+  alerts.yaml: |
+    groups:
+    - name: golden-signals
+      interval: 15s
+      rules:
+
+      # ERRORS — alert on the SYMPTOM the user feels, not on a cause.
+      - alert: HighErrorRate
+        expr: rate(errors_total[1m]) / rate(orders_total[1m]) > 0.05
+        for: 1m
+        labels:
+          severity: page
+        annotations:
+          summary: "Error rate above 5% for more than 1 minute"
+          description: "The order service is failing more than 1 in 20 requests."
+
+      # LATENCY — the 95th percentile, not the average.
+      - alert: HighLatencyP95
+        expr: histogram_quantile(0.95, rate(request_duration_seconds_bucket[5m])) > 2
+        for: 2m
+        labels:
+          severity: page
+        annotations:
+          summary: "p95 latency above 2 seconds"
+
+      # SATURATION — the queue is growing faster than it drains.
+      - alert: QueueBacklogGrowing
+        expr: queue_depth > 20
+        for: 5m
+        labels:
+          severity: ticket
+        annotations:
+          summary: "Queue depth above 20 for 5 minutes"
+
+      # A CAUSE-based alert, shown deliberately as the ANTI-PATTERN.
+      # A single Pod restarting does not necessarily hurt any user.
+      - alert: PodRestarted_AntiPattern
+        expr: process_uptime_seconds < 60
+        for: 0m
+        labels:
+          severity: info
+        annotations:
+          summary: "ANTI-PATTERN example — alerting on a cause, not a symptom"

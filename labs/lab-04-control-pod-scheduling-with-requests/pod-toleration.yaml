@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toleration-demo
+  namespace: kcna-lab
+spec:
+  # Matches the taint applied in the lab: workload=restricted:NoSchedule
+  tolerations:
+  - key: "workload"
+    operator: "Equal"
+    value: "restricted"
+    effect: "NoSchedule"
+  nodeSelector:
+    disktype: ssd
+  containers:
+  - name: app
+    image: nginx:1.27
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi

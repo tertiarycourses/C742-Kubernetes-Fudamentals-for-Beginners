@@ -1,0 +1,61 @@
+# Lab 16 — a CI/CD pipeline definition (GitHub Actions syntax).
+#
+# READ THIS CAREFULLY AND ANSWER: which jobs are CI, and which are CD?
+#
+# The key architectural point: CI produces an ARTIFACT (a tested image).
+# CD does NOT run kubectl deploy — it updates the MANIFEST REPOSITORY, and the
+# in-cluster GitOps agent reconciles the cluster to match. The pipeline never
+# needs cluster credentials.
+name: build-test-and-release
+
+on:
+  push:
+    branches: [main]
+
+env:
+  IMAGE: registry.example.com/kcna/inventory-api
+
+jobs:
+
+  # ---------------------------------------------------------------- CI
+  test:
+    name: "CI: unit tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run unit tests
+        run: pytest -q
+
+  build:
+    name: "CI: build and push the image"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the image
+        run: docker build -t $IMAGE:${{ github.sha }} .
+      - name: Scan the image for vulnerabilities
+        run: trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE:${{ github.sha }}
+      - name: Push the image
+        run: docker push $IMAGE:${{ github.sha }}
+
+  # ---------------------------------------------------------------- CD
+  release:
+    name: "CD: update the manifest repository"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the MANIFEST repo (not the app repo)
+        uses: actions/checkout@v4
+        with:
+          repository: kcna/manifests
+      - name: Point the manifest at the new image
+        run: |
+          sed -i "s|image: .*|image: $IMAGE:${{ github.sha }}|" manifests/deployment.yaml
+      - name: Commit the new desired state
+        run: |
+          git commit -am "Release ${{ github.sha }}"
+          git push
+      # NOTE: there is no 'kubectl apply' here, and no cluster credentials.
+      # The in-cluster GitOps agent (Argo CD / Flux) notices the commit and
+      # reconciles the cluster to match. That is the whole point.

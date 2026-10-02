@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-canary
+  namespace: kcna-lab
+spec:
+  # The selector matches BOTH Deployments, so traffic splits by replica ratio.
+  # Note: this is weighting by Pod count, not true percentage routing — a service
+  # mesh or an ingress with canary annotations gives you exact percentages.
+  selector:
+    app: app-canary
+  ports:
+  - port: 80
+    targetPort: 80

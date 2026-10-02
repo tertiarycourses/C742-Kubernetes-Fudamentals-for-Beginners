@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-canary
+  namespace: kcna-lab
+spec:
+  replicas: 1                 # 1 of 10 Pods => ~10% of traffic
+  selector:
+    matchLabels:
+      app: app-canary
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: app-canary       # SAME shared label as stable
+        track: canary
+        version: v2
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.27-alpine
+        ports: [{ containerPort: 80 }]
+        resources:
+          requests: { cpu: 25m, memory: 32Mi }

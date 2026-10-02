@@ -1,0 +1,15 @@
+# This Pod requests more memory than any node in the cluster has.
+# It will stay Pending with a FailedScheduling event — that is the point of the lab.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unschedulable-demo
+  namespace: kcna-lab
+spec:
+  containers:
+  - name: greedy
+    image: nginx:1.27
+    resources:
+      requests:
+        memory: 500Gi
+        cpu: "64"

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-release
+  namespace: kcna-lab
+  annotations:
+    kubernetes.io/change-cause: "v1 — initial release (nginx:1.27)"
+spec:
+  replicas: 4
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: app-release
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1          # one EXTRA Pod may be created above the desired count
+      maxUnavailable: 0    # zero downtime: never take a Pod down before its replacement is Ready
+  template:
+    metadata:
+      labels:
+        app: app-release
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.27
+        ports:
+        - containerPort: 80
+        readinessProbe:      # maxUnavailable:0 is only meaningful WITH a readiness probe
+          httpGet: { path: /, port: 80 }
+          initialDelaySeconds: 2
+          periodSeconds: 3
+        resources:
+          requests: { cpu: 50m, memory: 64Mi }
+          limits:   { cpu: 200m, memory: 128Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-release
+  namespace: kcna-lab
+spec:
+  selector:
+    app: app-release
+  ports:
+  - port: 80
+    targetPort: 80

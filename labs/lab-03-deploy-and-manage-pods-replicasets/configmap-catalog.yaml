@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-catalog
+  namespace: kcna-lab
+data:
+  index.html: |
+    <!doctype html>
+    <html><head><title>KCNA Store</title></head>
+    <body><h1>KCNA Sample Store</h1><p>Served from a ConfigMap.</p></body></html>
+  products.json: |
+    [
+      {"sku":"SKU-1001","name":"Mechanical Keyboard","price":129.00,"stock":42},
+      {"sku":"SKU-1002","name":"27-inch Monitor","price":389.00,"stock":18},
+      {"sku":"SKU-1003","name":"USB-C Dock","price":199.00,"stock":7},
+      {"sku":"SKU-1004","name":"Noise-Cancelling Headset","price":249.00,"stock":25},
+      {"sku":"SKU-1005","name":"Ergonomic Mouse","price":79.00,"stock":63},
+      {"sku":"SKU-1006","name":"Laptop Stand","price":59.00,"stock":31},
+      {"sku":"SKU-1007","name":"4K Webcam","price":149.00,"stock":12},
+      {"sku":"SKU-1008","name":"Desk Lamp","price":45.00,"stock":54},
+      {"sku":"SKU-1009","name":"External SSD 1TB","price":169.00,"stock":9},
+      {"sku":"SKU-1010","name":"Cable Organiser","price":19.00,"stock":88}
+    ]

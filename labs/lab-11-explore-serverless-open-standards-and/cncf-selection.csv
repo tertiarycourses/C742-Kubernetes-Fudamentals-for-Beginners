@@ -1,0 +1,9 @@
+project,cncf_maturity,category,fits_requirement,operational_cost,lock_in_risk,decision
+Prometheus,Graduated,Observability - metrics,yes,medium,low,adopt
+Grafana,Graduated,Observability - dashboards,yes,low,low,adopt
+OpenTelemetry,Graduated,Observability - telemetry,yes,medium,low,adopt
+Argo CD,Graduated,Application delivery - GitOps,yes,medium,low,adopt
+Helm,Graduated,Packaging,yes,low,low,adopt
+Linkerd,Graduated,Service mesh,partial,high,medium,defer
+Knative,Incubating,Serverless,partial,high,medium,defer
+KEDA,Graduated,Event-driven autoscaling,yes,medium,low,trial

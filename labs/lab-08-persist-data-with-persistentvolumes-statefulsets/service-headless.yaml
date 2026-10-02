@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  namespace: kcna-lab
+spec:
+  clusterIP: None            # headless — gives each Pod its own DNS record
+  selector:
+    app: database
+  ports:
+  - port: 5432
+    name: postgres

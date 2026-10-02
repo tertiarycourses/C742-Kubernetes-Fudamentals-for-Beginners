@@ -1,0 +1,11 @@
+# Selecting every Pod with no ingress rules switches the namespace to default-deny.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: kcna-lab
+spec:
+  podSelector: {}            # {} means EVERY Pod in the namespace
+  policyTypes:
+  - Ingress
+  # no 'ingress:' key at all => nothing is allowed in

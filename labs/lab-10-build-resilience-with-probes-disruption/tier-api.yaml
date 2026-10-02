@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: kcna-lab
+  labels:
+    tier: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: api
+        tier: api
+    spec:
+      containers:
+      - name: api
+        image: nginx:1.27
+        ports:
+        - containerPort: 80
+        # Create the health file the probes below depend on.
+        lifecycle:
+          postStart:
+            exec:
+              command: ["sh","-c","echo ok > /usr/share/nginx/html/healthz"]
+        startupProbe:              # protects a slow boot from the liveness probe
+          httpGet: { path: /healthz, port: 80 }
+          failureThreshold: 30
+          periodSeconds: 2
+        livenessProbe:             # RESTARTS the container when it hangs
+          httpGet: { path: /healthz, port: 80 }
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 2
+        readinessProbe:            # REMOVES the Pod from Service endpoints
+          httpGet: { path: /healthz, port: 80 }
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        resources:
+          requests: { cpu: 50m, memory: 64Mi }
+          limits:   { cpu: 200m, memory: 128Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: kcna-lab
+spec:
+  selector:
+    app: api
+  ports:
+  - port: 8080
+    targetPort: 80

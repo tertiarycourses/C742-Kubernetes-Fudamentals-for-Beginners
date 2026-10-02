@@ -1,0 +1,20 @@
+# Policies are additive: this one adds an allow rule on top of the default-deny.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-inventory
+  namespace: kcna-lab
+spec:
+  podSelector:
+    matchLabels:
+      app: inventory         # the Pods being protected
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: frontend      # only Pods labelled app=frontend may connect
+    ports:
+    - protocol: TCP
+      port: 8080

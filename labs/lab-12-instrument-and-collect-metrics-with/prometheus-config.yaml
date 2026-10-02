@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: kcna-lab
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    rule_files:
+      - /etc/prometheus/rules/*.yaml
+
+    scrape_configs:
+      # Prometheus scrapes ITSELF first — always verify this target is up.
+      - job_name: prometheus
+        static_configs:
+          - targets: ['localhost:9090']
+
+      # The instrumented sample application.
+      - job_name: metrics-app
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names: [kcna-lab]
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            action: keep
+            regex: metrics-app
+          - source_labels: [__meta_kubernetes_pod_name]
+            target_label: pod

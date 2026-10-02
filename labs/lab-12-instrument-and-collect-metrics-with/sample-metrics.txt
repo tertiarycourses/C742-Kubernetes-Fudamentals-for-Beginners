@@ -1,0 +1,41 @@
+# Lab 12 — a sample of the Prometheus text exposition format.
+# This is exactly what your application serves on /metrics and what Prometheus scrapes.
+# Read it before you deploy anything: identify which metric TYPE each one is.
+
+# HELP orders_total Total orders processed since process start.
+# TYPE orders_total counter
+orders_total 18432
+
+# HELP errors_total Total failed requests since process start.
+# TYPE errors_total counter
+errors_total 271
+
+# HELP queue_depth Number of messages currently waiting in the queue.
+# TYPE queue_depth gauge
+queue_depth 14
+
+# HELP request_duration_seconds Request latency distribution.
+# TYPE request_duration_seconds histogram
+request_duration_seconds_bucket{le="0.1"} 9821
+request_duration_seconds_bucket{le="0.25"} 14903
+request_duration_seconds_bucket{le="0.5"} 17012
+request_duration_seconds_bucket{le="1.0"} 18001
+request_duration_seconds_bucket{le="2.5"} 18390
+request_duration_seconds_bucket{le="+Inf"} 18432
+request_duration_seconds_sum 5218.442
+request_duration_seconds_count 18432
+
+# HELP process_uptime_seconds Seconds since the process started.
+# TYPE process_uptime_seconds gauge
+process_uptime_seconds 86400
+
+# ---------------------------------------------------------------------------
+# QUESTIONS (answer before moving on)
+#
+# 1. Which metrics only ever increase? What must you ALWAYS wrap them in?
+# 2. queue_depth is 14. Could it be 9 at the next scrape? Which type allows that?
+# 3. A histogram bucket is cumulative ("le" = less than or equal). How many
+#    requests took longer than 1.0 second?
+# 4. Write the PromQL for per-second order throughput over the last 5 minutes.
+# 5. Write the PromQL for the 95th-percentile request latency.
+# ---------------------------------------------------------------------------

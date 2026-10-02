@@ -1,0 +1,7 @@
+namespace,team,cpu_requested,cpu_used,mem_requested_gb,mem_used_gb,nodes,monthly_cost_sgd
+production,platform,32.0,24.6,128.0,96.4,8,8640.00
+staging,platform,16.0,3.2,64.0,11.8,4,4320.00
+data-pipeline,analytics,24.0,19.8,96.0,78.2,6,6480.00
+ml-training,analytics,48.0,7.1,192.0,28.6,12,12960.00
+internal-tools,it,8.0,2.4,32.0,9.1,2,2160.00
+kcna-lab,training,4.0,1.1,16.0,3.9,1,1080.00

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resources-demo
+  namespace: kcna-lab
+  labels:
+    app: resources-demo
+spec:
+  containers:
+  - name: app
+    image: nginx:1.27
+    resources:
+      requests:          # used by the SCHEDULER to choose a node
+        cpu: 100m
+        memory: 128Mi
+      limits:            # enforced by the KUBELET at runtime
+        cpu: 500m
+        memory: 256Mi

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: database
+  namespace: kcna-lab
+spec:
+  serviceName: database        # must match the headless Service name
+  replicas: 3
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: db
+        image: busybox:1.36
+        command: ["sh", "-c", "echo \"$(hostname) ready\" > /data/identity.txt; sleep 3600"]
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 25m
+            memory: 32Mi
+  # Each replica gets its OWN PersistentVolumeClaim from this template.
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 256Mi

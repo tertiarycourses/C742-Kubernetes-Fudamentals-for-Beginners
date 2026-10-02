@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops-app
+  namespace: kcna-lab
+  annotations:
+    gitops.tertiaryinfotech.com/managed-by: "reconcile.sh"
+spec:
+  replicas: 3                 # <-- THE DECLARED DESIRED STATE. Git is the source of truth.
+  selector:
+    matchLabels:
+      app: gitops-app
+  template:
+    metadata:
+      labels:
+        app: gitops-app
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.27
+        ports:
+        - containerPort: 80
+        resources:
+          requests: { cpu: 25m, memory: 32Mi }
+          limits:   { cpu: 100m, memory: 64Mi }

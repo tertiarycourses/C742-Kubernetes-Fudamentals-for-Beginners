@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spread
+  namespace: kcna-lab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spread
+  template:
+    metadata:
+      labels:
+        app: spread
+    spec:
+      tolerations:
+      - key: "workload"
+        operator: "Equal"
+        value: "restricted"
+        effect: "NoSchedule"
+      affinity:
+        podAntiAffinity:
+          # 'preferred' not 'required' — on a single-node cluster a required rule
+          # would leave every replica after the first stuck in Pending.
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: spread
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: app
+        image: nginx:1.27
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi

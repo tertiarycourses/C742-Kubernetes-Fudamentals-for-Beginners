@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api-pdb
+  namespace: kcna-lab
+spec:
+  minAvailable: 2            # at most 1 of the 3 API Pods may be voluntarily evicted
+  selector:
+    matchLabels:
+      app: api

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kustomize-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kustomize-web
+  template:
+    metadata:
+      labels:
+        app: kustomize-web
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.27
+        ports:
+        - containerPort: 80
+        resources:
+          requests: { cpu: 50m, memory: 64Mi }

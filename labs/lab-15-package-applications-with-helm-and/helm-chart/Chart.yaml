@@ -1,0 +1,9 @@
+apiVersion: v2
+name: webapp
+description: A Helm chart for the KCNA sample web application
+type: application
+version: 1.0.0          # the chart's own version
+appVersion: "1.27"      # the version of the application being deployed
+maintainers:
+  - name: Tertiary Infotech Academy
+    url: https://www.tertiarycourses.com.sg

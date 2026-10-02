@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: writer
+  namespace: kcna-lab
+spec:
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: orders-data      # reference the CLAIM, never the volume directly
+  - name: seed
+    configMap:
+      name: orders-seed
+  containers:
+  - name: writer
+    image: busybox:1.36
+    command: ["sh", "-c"]
+    args:
+    - |
+      if [ ! -f /data/orders.csv ]; then
+        echo "Seeding the persistent volume for the first time..."
+        cp /seed/orders.csv /data/orders.csv
+      else
+        echo "orders.csv already exists — the data survived the Pod being deleted."
+      fi
+      wc -l /data/orders.csv
+      sleep 3600
+    volumeMounts:
+    - name: data
+      mountPath: /data
+    - name: seed
+      mountPath: /seed

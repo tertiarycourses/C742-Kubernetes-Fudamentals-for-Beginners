@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory
+  namespace: kcna-lab
+spec:
+  type: ClusterIP          # in-cluster only — the default
+  selector:
+    app: inventory         # THIS is how the Service finds its Pods
+  ports:
+  - name: http
+    port: 80               # the port clients use on the ClusterIP
+    targetPort: 8080       # the port the container listens on

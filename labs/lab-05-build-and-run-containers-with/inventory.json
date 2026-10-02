@@ -1,0 +1,14 @@
+[
+  {"sku":"SKU-1001","name":"Mechanical Keyboard","warehouse":"SG-01","stock":42,"reorder_at":20},
+  {"sku":"SKU-1002","name":"27-inch Monitor","warehouse":"SG-01","stock":18,"reorder_at":10},
+  {"sku":"SKU-1003","name":"USB-C Dock","warehouse":"SG-02","stock":7,"reorder_at":15},
+  {"sku":"SKU-1004","name":"Noise-Cancelling Headset","warehouse":"SG-01","stock":25,"reorder_at":12},
+  {"sku":"SKU-1005","name":"Ergonomic Mouse","warehouse":"SG-02","stock":63,"reorder_at":30},
+  {"sku":"SKU-1006","name":"Laptop Stand","warehouse":"SG-01","stock":31,"reorder_at":15},
+  {"sku":"SKU-1007","name":"4K Webcam","warehouse":"SG-03","stock":12,"reorder_at":10},
+  {"sku":"SKU-1008","name":"Desk Lamp","warehouse":"SG-02","stock":54,"reorder_at":25},
+  {"sku":"SKU-1009","name":"External SSD 1TB","warehouse":"SG-03","stock":9,"reorder_at":12},
+  {"sku":"SKU-1010","name":"Cable Organiser","warehouse":"SG-01","stock":88,"reorder_at":40},
+  {"sku":"SKU-1011","name":"Portable Projector","warehouse":"SG-03","stock":4,"reorder_at":8},
+  {"sku":"SKU-1012","name":"Wireless Charger","warehouse":"SG-02","stock":37,"reorder_at":20}
+]

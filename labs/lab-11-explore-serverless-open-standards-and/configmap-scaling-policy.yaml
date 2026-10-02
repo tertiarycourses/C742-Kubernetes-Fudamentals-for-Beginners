@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scaling-policy
+  namespace: kcna-lab
+data:
+  # An event-driven scaling policy, expressed as configuration.
+  # This is the shape KEDA uses: scale on a queue, not just on CPU.
+  policy.yaml: |
+    scaleTargetRef: scale-to-zero
+    pollingInterval: 15        # seconds between checks of the event source
+    cooldownPeriod: 300        # seconds of no events before scaling back to zero
+    minReplicaCount: 0         # scale to ZERO when idle — the serverless property
+    maxReplicaCount: 10
+    triggers:
+      - type: queue
+        metadata:
+          queueName: orders
+          queueLength: "5"     # one replica per 5 queued messages
+      - type: cron
+        metadata:
+          timezone: Asia/Singapore
+          start: "0 9 * * 1-5"   # pre-warm for the working day
+          end:   "0 19 * * 1-5"
+          desiredReplicas: "3"
